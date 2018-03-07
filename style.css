@@ -1,3 +1,39 @@
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+
 button, div, form, input {
     margin: 10px;
+}
+
+#button-holder {
+    background-color: grey;
+    margin: 1%;
+    
+}
+
+#giphy-images {
+    background-color: grey;
+    /* margin: 1%;
+    padding: 1%; */
+    float: left;
+    width: 70%;
+}
+
+#giphy-form {
+    background-color: goldenrod;
+    float: right;
+    width: 20%;
+}
+
+img {
+    width: 100%;
+}
+
+.gif {
+    width: 33%;
+    float: left;
 }
