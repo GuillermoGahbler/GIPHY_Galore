@@ -1,6 +1,4 @@
 var giphyAnimals = ["dog", "cat", "bird", "elephant", "monkey"];
-var APIKey = "HYYQ5hYpRzGj4v2P3BhIHObX0HfvGTqv";
-var queryURL = '';
 
 
 // function 1 we're naming this renderButtons this will for loop through the animal array and create the buttons for each animal in the array
@@ -16,8 +14,13 @@ function renderbuttons (){
      //   this will add the text from the array to each button
      animalButton.text(giphyAnimals[i]); 
      
+        // adding a class to the animal buttons so that they can be targeted by class if needed.
+    animalButton.addClass('animal-button')
+
     //  this will now add the newly named button to html targeting the button-holder id using $('#button-holder') and then appending using .append(animalButton).
      $('#button-holder').append(animalButton)
+
+
     }     
 }
 
@@ -45,19 +48,40 @@ if (newAnimalSearch){
 
 }
 
+// function 3 makeAjaxCall calling on the ajax
+function makeAjaxCall(animal){
+    var APIKey = "HYYQ5hYpRzGj4v2P3BhIHObX0HfvGTqv";
+    var queryURL = "https://api.giphy.com/v1/gifs/search?api_key="+ APIKey+"&q="+animal.text()+"&limit=10&offset=0&rating=PG-13&lang=en";
+    
+$.ajax({
+    url: queryURL,
+    method: "GET",
+}) .then(function(responseFromAjax){
+    formatResponse(responseFromAjax.data);
+    // console.log(responseFromAjax.data)
+
+})
+}
+
+function formatResponse(ThisCanBeAnyArray){
+$('.main-content').empty();
+for (var i = 0; i < ThisCanBeAnyArray.length; i++) {
+    var div = $('<div>');
+    div.addClass('gif');
+    div.append('<p> Rating: ' +ThisCanBeAnyArray[i].rating+ '</p>');
+    div.append('<img src= ' +ThisCanBeAnyArray[i].images.original_still.url+ '>');
+    $('.main-content').append(div);
+    
+}
+
+}
 
 
+//  function 4 get response calling on the ajax
+function getResponse(){
+makeAjaxCall($(this))
 
-
-
-
-
-
-
-
-
-
-
+}
 
 
 
@@ -65,9 +89,16 @@ if (newAnimalSearch){
 //  events listens for the click 
  $('#search-giphy').on("click", addbutton);
 
+ $('#button-holder').on('click','.animal-button',getResponse)
+
+//  add another event to targetr the animal-button
+// $('.animal-button').on("click", getResponse)
+
 
  // this calls the function renderbuttons which was created above NOTICE this is outside of that function in the global scope.
 renderbuttons();
+
+
 
 
 
